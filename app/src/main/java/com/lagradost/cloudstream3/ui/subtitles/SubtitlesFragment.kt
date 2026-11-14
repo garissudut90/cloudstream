@@ -326,7 +326,7 @@ class SubtitlesFragment : BaseDialogFragment<SubtitleSettingsBinding>(
             windowColor = getDefColor(3),
             edgeType = CaptionStyleCompat.EDGE_TYPE_OUTLINE,
             edgeColor = getDefColor(1),
-            font = null,
+            font = SubtitleFont.Netflix,
             typefaceFilePath = null,
             elevation = DEF_SUBS_ELEVATION,
             fixedTextSize = null,
@@ -761,7 +761,7 @@ class SubtitlesFragment : BaseDialogFragment<SubtitleSettingsBinding>(
             }
 
             subsFont.setOnLongClickListener { textView ->
-                state = state.copy(font = null, typefaceFilePath = null)
+                state = state.copy(font = SubtitleFont.Netflix, typefaceFilePath = null)
                 textView.context.updateState()
                 showToast(activity, R.string.subs_default_reset_toast, Toast.LENGTH_SHORT)
                 return@setOnLongClickListener true

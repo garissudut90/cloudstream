@@ -1,4 +1,6 @@
 package com.lagradost.cloudstream3
+import com.lagradost.cloudstream3.APIHolder
+import com.lagradost.cloudstream3.providers.MovieBox
 
 import android.app.Activity
 import android.app.Application
@@ -74,6 +76,11 @@ class CloudStreamApp : Application(), SingletonImageLoader.Factory {
         // If we want to initialize Coil as early as possible, maybe when
         // loading an image or GIF in a splash screen activity.
         // buildImageLoader(applicationContext)
+
+        val movieBox = MovieBox()
+        APIHolder.allProviders.add(movieBox)
+        APIHolder.addPluginMapping(movieBox)
+        APIHolder.apiMap = null
 
         ExceptionHandler(filesDir.resolve("last_error")) {
             val intent = context!!.packageManager.getLaunchIntentForPackage(context!!.packageName)

@@ -382,10 +382,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         }
 
         fun Context.selectHomepage(selectedApiName: String?, callback: (String) -> Unit) {
-            val validAPIs = filterProviderByPreferredMedia().toMutableList()
+            val validAPIs = filterProviderByPreferredMedia().filter { it.name != noneApi.name && it.name != randomApi.name }.toMutableList()
 
-            validAPIs.add(0, randomApi)
-            validAPIs.add(0, noneApi)
+            // validAPIs.add(0, randomApi)
+            // validAPIs.add(0, noneApi)
             //val builder: AlertDialog.Builder = AlertDialog.Builder(this)
             //builder.setView(R.layout.home_select_mainpage)
             val builder =
@@ -509,7 +509,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                     val remainingApis = sortedApis.filterNot { pinnedphashset.contains(it.name) }
 
                     currentValidApis = mutableListOf<MainAPI>().apply {
-                        addAll(validAPIs.take(2))
                         addAll(pinnedApis)
                         addAll(remainingApis)
                     }
@@ -525,7 +524,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 }
                 // pin provider on hold
                 listView?.setOnItemLongClickListener { _, _, i, _ ->
-                    if (currentValidApis.isNotEmpty() && i > 1) {
+                    if (currentValidApis.isNotEmpty()) {
                         val pinnedp = DataStoreHelper.pinnedProviders.toMutableList()
                         val thisapi = currentValidApis[i].name
                         if (pinnedp.contains(thisapi)) {
@@ -700,6 +699,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             homeMasterRecycler.adapter = homeMasterAdapter
 
             homeApiFab.isVisible = isLayout(PHONE)
+//            homeApiFab.isGone = true
+//            homeChangeApi.isGone = true
 
             homePreviewReloadProvider.setOnClickListener {
                 homeViewModel.loadAndCancel(
@@ -957,7 +958,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         }
 
         homeViewModel.reloadStored()
-        homeViewModel.loadAndCancel(DataStoreHelper.currentHomePage, false)
+        val saved = DataStoreHelper.currentHomePage
+        val startApi =
+            if (saved == null || saved == noneApi.name || saved == randomApi.name || getApiFromNameNull(saved) == null)
+                apis.firstOrNull { it.hasMainPage }?.name
+            else saved
+        homeViewModel.loadAndCancel(startApi, false)
         //loadHomePage(false)
 
         // nice profile pic on homepage
