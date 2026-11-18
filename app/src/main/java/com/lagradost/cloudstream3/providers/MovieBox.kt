@@ -8,7 +8,7 @@ import com.lagradost.cloudstream3.utils.newExtractorLink
 import com.lagradost.nicehttp.JsonAsString
 import java.security.MessageDigest
 
-class MovieBox : MainAPI() {
+open class MovieBox : MainAPI() {
     override var mainUrl = "https://themoviebox.org"
     private val apiBase = "https://h5-api.aoneroom.com"
 
@@ -416,4 +416,22 @@ class MovieBox : MainAPI() {
 
         return found
     }
+}
+
+class MovieBoxFilm : MovieBox() {
+    override var name = "Film"
+    override val mainPage = mainPageOf(
+        "8821254238245470240" to "Trending Movies",
+        "6528093688173053896" to "Trending Indonesian Movies",
+        "4019055174353407000" to "Recently Added"
+    )
+}
+
+class MovieBoxSeries : MovieBox() {
+    override var name = "Series"
+    override val mainPage = mainPageOf(
+        "4809349160627587984" to "Trending Drama",
+        "5283462032510044280" to "Trending Indonesian Drama",
+        "8624142774394406504" to "Trending C-Drama"
+    )
 }

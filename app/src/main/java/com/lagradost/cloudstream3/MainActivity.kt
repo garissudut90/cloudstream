@@ -504,8 +504,10 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
         val isNavVisible = listOf(
             R.id.navigation_home,
             R.id.navigation_search,
-            R.id.navigation_library,
-            R.id.navigation_downloads,
+            R.id.navigation_movies,
+            R.id.navigation_series,
+//            R.id.navigation_library,
+//            R.id.navigation_downloads,
             R.id.navigation_settings,
             R.id.navigation_download_child,
             R.id.navigation_download_queue,
@@ -579,8 +581,8 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
                     R.id.navigation_download_child,
                     R.id.navigation_download_queue
                 ) -> {
-                    navRailView.menu.findItem(R.id.navigation_downloads).isChecked = true
-                    navView.menu.findItem(R.id.navigation_downloads).isChecked = true
+                    navRailView.menu.findItem(R.id.navigation_downloads)?.isChecked = true
+                    navView.menu.findItem(R.id.navigation_downloads)?.isChecked = true
                 }
 
                 in listOf(
@@ -777,10 +779,10 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
                 fromView.nextFocusRightId = targetView
 
                 for (focusView in arrayOf(
-                    R.id.navigation_downloads,
                     R.id.navigation_home,
                     R.id.navigation_search,
-                    R.id.navigation_library,
+                    R.id.navigation_movies,
+                    R.id.navigation_series,
                     R.id.navigation_settings,
                 )) {
                     fromView.findViewById<View?>(focusView)?.nextFocusRightId = targetView
@@ -1801,9 +1803,9 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
             for (id in arrayOf(
                 R.id.navigation_home,
                 R.id.navigation_search,
-                R.id.navigation_library,
-                R.id.navigation_downloads,
-                R.id.navigation_settings
+                R.id.navigation_movies,
+                R.id.navigation_series,
+                R.id.navigation_settings,
             )) {
                 val view = rail.findViewById<View?>(id) ?: continue
                 prevId?.let { view.nextFocusUpId = it }

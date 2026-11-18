@@ -19,6 +19,8 @@ import com.lagradost.cloudstream3.BuildConfig
 import com.lagradost.cloudstream3.mvvm.safe
 import com.lagradost.cloudstream3.mvvm.safeAsync
 import com.lagradost.cloudstream3.plugins.PluginManager
+import com.lagradost.cloudstream3.providers.MovieBoxFilm
+import com.lagradost.cloudstream3.providers.MovieBoxSeries
 import com.lagradost.cloudstream3.ui.settings.Globals.EMULATOR
 import com.lagradost.cloudstream3.ui.settings.Globals.TV
 import com.lagradost.cloudstream3.ui.settings.Globals.isLayout
@@ -77,9 +79,19 @@ class CloudStreamApp : Application(), SingletonImageLoader.Factory {
         // loading an image or GIF in a splash screen activity.
         // buildImageLoader(applicationContext)
 
+//        val movieBox = MovieBox()
+//        APIHolder.allProviders.add(movieBox)
+//        APIHolder.addPluginMapping(movieBox)
+//        APIHolder.apiMap = null
+
         val movieBox = MovieBox()
-        APIHolder.allProviders.add(movieBox)
-        APIHolder.addPluginMapping(movieBox)
+        val movieBoxFilm = MovieBoxFilm()
+        val movieBoxSeries = MovieBoxSeries()
+
+        listOf(movieBox, movieBoxFilm, movieBoxSeries).forEach {
+            APIHolder.allProviders.add(it)
+            APIHolder.addPluginMapping(it)
+        }
         APIHolder.apiMap = null
 
         ExceptionHandler(filesDir.resolve("last_error")) {

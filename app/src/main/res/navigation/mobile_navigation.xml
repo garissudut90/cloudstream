@@ -308,6 +308,28 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_movies"
+        android:name="com.lagradost.cloudstream3.ui.home.HomeFragment"
+        android:label="@string/nav_movies"
+        tools:layout="@layout/fragment_home">
+        <argument
+            android:name="homeApi"
+            android:defaultValue="Film"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_series"
+        android:name="com.lagradost.cloudstream3.ui.home.HomeFragment"
+        android:label="@string/nav_series"
+        tools:layout="@layout/fragment_home">
+        <argument
+            android:name="homeApi"
+            android:defaultValue="Series"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_search"
         android:name="com.lagradost.cloudstream3.ui.search.SearchFragment"
         android:label="@string/title_search"

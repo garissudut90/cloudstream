@@ -804,6 +804,8 @@
     <string name="top_left">Top left</string>
     <string name="top_center">Top center</string>
     <string name="top_right">Top right</string>
+    <string name="nav_movies">Film</string>
+    <string name="nav_series">Series</string>
     <plurals name="downloads_active">
         <item quantity="one">%d active download</item>
         <item quantity="other">%d active downloads</item>

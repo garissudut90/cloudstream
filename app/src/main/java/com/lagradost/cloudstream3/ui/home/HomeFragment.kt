@@ -898,8 +898,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                         val isNetworkError = data.isNetworkError
 
                         // Show the downloads button if we have any sort of network shenanigans
-                        homeReloadConnectionGoToDownloads.isVisible =
-                            hasNoNetworkConnection || isNetworkError
+                        //homeReloadConnectionGoToDownloads.isVisible =
+                        //    hasNoNetworkConnection || isNetworkError
+                        homeReloadConnectionGoToDownloads.isGone = true
 
                         // Only hide the open in browser button if we know this is not network shenanigans related to cs3
                         homeReloadConnectionOpenInBrowser.isGone = hasNoNetworkConnection
@@ -958,12 +959,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         }
 
         homeViewModel.reloadStored()
-        val saved = DataStoreHelper.currentHomePage
-        val startApi =
-            if (saved == null || saved == noneApi.name || saved == randomApi.name || getApiFromNameNull(saved) == null)
+
+        val forcedApi = arguments?.getString("homeApi")?.ifBlank { null }
+        val savedApi = DataStoreHelper.currentHomePage
+        val defaultApi =
+            if (savedApi == null || savedApi == noneApi.name || savedApi == randomApi.name || getApiFromNameNull(savedApi) == null)
                 apis.firstOrNull { it.hasMainPage }?.name
-            else saved
-        homeViewModel.loadAndCancel(startApi, false)
+            else savedApi
+        val homeStartApi = forcedApi ?: defaultApi
+        Log.d(TAG, "startApi=$homeStartApi found=${getApiFromNameNull(homeStartApi) != null}")
+        homeViewModel.loadAndCancel(
+            homeStartApi,
+            forceReload = homeViewModel.apiName.value != homeStartApi,
+            fromUI = false
+        )
         //loadHomePage(false)
 
         // nice profile pic on homepage
@@ -998,10 +1007,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         val rail = activity?.findViewById<View>(R.id.nav_rail_view) ?: return
         rail.nextFocusRightId = target
         for (focusView in arrayOf(
-            R.id.navigation_downloads,
             R.id.navigation_home,
             R.id.navigation_search,
-            R.id.navigation_library,
+            R.id.navigation_movies,
+            R.id.navigation_series,
             R.id.navigation_settings,
         )) {
             rail.findViewById<View>(focusView)?.nextFocusRightId = target
