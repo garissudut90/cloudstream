@@ -5,6 +5,9 @@ on:
   push:
     branches: [master]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,7 +26,36 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --no-daemon
 
-      - uses: actions/upload-artifact@v4
+      - name: APK Collection
+        run: |
+          mkdir -p out
+          find . -path "*/build/outputs/apk/*" -name "*.apk" -exec cp {} out /\;
+          ls -la out
+
+      - name: APK Signature
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+          KS_PASS: ${{ secrets.KS_PASS }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.KEY_PASS }}
+        run: |
+          echo "$KEYSTORE_B64" | base64 -d > kunci.jks
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          mkdir -p signed
+          for f in out/*.apk; do
+            n=$(basename "$f" .apk | sed 's/-unsigned//')
+            "$BT/zipalign" -p -f 4 "$f" "signed/$n-aligned.apk"
+            "$BT/apksigner" sign --ks kunci.jks \
+              --ks-pass env:KS_PASS --ks-key-alias "$KEY_ALIAS" --key-pass env:KEY_PASS \
+              --out "signed/$n.apk" "signed/$n-aligned.apk"
+          done
+          rm signed/*-aligned.apk
+          rm -f kunci.jks
+          ls -la signed
+
+      - name: Build Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: apk-release
-          path: app/build/outputs/apk/**/release/*.apk
+          tag_name: build-${{ github.run_number }}
+          name: Build ${{ github.run_number }}
+          files: signed/*.apk

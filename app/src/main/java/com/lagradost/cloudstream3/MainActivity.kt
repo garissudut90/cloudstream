@@ -1337,21 +1337,21 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
         }
 
         // Automatically enable jsdelivr if cant connect to raw.githubusercontent.com
-        if (this.getKey<Boolean>(getString(R.string.jsdelivr_proxy_key)) == null && isNetworkAvailable()) {
-            main {
-                if (checkGithubConnectivity()) {
-                    this.setKey(getString(R.string.jsdelivr_proxy_key), false)
-                } else {
-                    this.setKey(getString(R.string.jsdelivr_proxy_key), true)
-                    showSnackbar(
-                        this@MainActivity,
-                        R.string.jsdelivr_enabled,
-                        Snackbar.LENGTH_LONG,
-                        R.string.revert
-                    ) { setKey(getString(R.string.jsdelivr_proxy_key), false) }
-                }
-            }
-        }
+//        if (this.getKey<Boolean>(getString(R.string.jsdelivr_proxy_key)) == null && isNetworkAvailable()) {
+//            main {
+//                if (checkGithubConnectivity()) {
+//                    this.setKey(getString(R.string.jsdelivr_proxy_key), false)
+//                } else {
+//                    this.setKey(getString(R.string.jsdelivr_proxy_key), true)
+//                    showSnackbar(
+//                        this@MainActivity,
+//                        R.string.jsdelivr_enabled,
+//                        Snackbar.LENGTH_LONG,
+//                        R.string.revert
+//                    ) { setKey(getString(R.string.jsdelivr_proxy_key), false) }
+//                }
+//            }
+//        }
 
         ioSafe { SafeFile.check(this@MainActivity) }
 
@@ -1360,51 +1360,51 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
                 showToast(R.string.safe_mode_file, Toast.LENGTH_LONG)
             }
         } else if (lastError == null) {
-            ioSafe {
-                DataStoreHelper.currentHomePage?.let { homeApi ->
-                    mainPluginsLoadedEvent.invoke(loadSinglePlugin(this@MainActivity, homeApi))
-                } ?: run {
-                    mainPluginsLoadedEvent.invoke(false)
-                }
-
-                ioSafe {
-                    if (settingsManager.getBoolean(
-                            getString(R.string.auto_update_plugins_key),
-                            true
-                        )
-                    ) {
-                        PluginManager.___DO_NOT_CALL_FROM_A_PLUGIN_updateAllOnlinePluginsAndLoadThem(
-                            this@MainActivity
-                        )
-                    } else {
-                        ___DO_NOT_CALL_FROM_A_PLUGIN_loadAllOnlinePlugins(this@MainActivity)
-                    }
-
-                    //Automatically download not existing plugins, using mode specified.
-                    /*val autoDownloadPlugin = AutoDownloadMode.getEnum(
-                        settingsManager.getInt(
-                            getString(R.string.auto_download_plugins_key),
-                            0
-                        )
-                    ) ?: AutoDownloadMode.Disable
-                    if (autoDownloadPlugin != AutoDownloadMode.Disable) {
-                        PluginManager.___DO_NOT_CALL_FROM_A_PLUGIN_downloadNotExistingPluginsAndLoad(
-                            this@MainActivity,
-                            autoDownloadPlugin
-                        )
-                    }*/
-                }
-
-                ioSafe {
-                    PluginManager.___DO_NOT_CALL_FROM_A_PLUGIN_loadAllLocalPlugins(
-                        this@MainActivity,
-                        false
-                    )
-                }
-
-// Add your channel creation here
-
-            }
+//            ioSafe {
+//                DataStoreHelper.currentHomePage?.let { homeApi ->
+//                    mainPluginsLoadedEvent.invoke(loadSinglePlugin(this@MainActivity, homeApi))
+//                } ?: run {
+//                    mainPluginsLoadedEvent.invoke(false)
+//                }
+//
+//                ioSafe {
+//                    if (settingsManager.getBoolean(
+//                            getString(R.string.auto_update_plugins_key),
+//                            true
+//                        )
+//                    ) {
+//                        PluginManager.___DO_NOT_CALL_FROM_A_PLUGIN_updateAllOnlinePluginsAndLoadThem(
+//                            this@MainActivity
+//                        )
+//                    } else {
+//                        ___DO_NOT_CALL_FROM_A_PLUGIN_loadAllOnlinePlugins(this@MainActivity)
+//                    }
+//
+//                    //Automatically download not existing plugins, using mode specified.
+//                    /*val autoDownloadPlugin = AutoDownloadMode.getEnum(
+//                        settingsManager.getInt(
+//                            getString(R.string.auto_download_plugins_key),
+//                            0
+//                        )
+//                    ) ?: AutoDownloadMode.Disable
+//                    if (autoDownloadPlugin != AutoDownloadMode.Disable) {
+//                        PluginManager.___DO_NOT_CALL_FROM_A_PLUGIN_downloadNotExistingPluginsAndLoad(
+//                            this@MainActivity,
+//                            autoDownloadPlugin
+//                        )
+//                    }*/
+//                }
+//
+//                ioSafe {
+//                    PluginManager.___DO_NOT_CALL_FROM_A_PLUGIN_loadAllLocalPlugins(
+//                        this@MainActivity,
+//                        false
+//                    )
+//                }
+//
+//// Add your channel creation here
+//
+//            }
         } else {
             val builder: AlertDialog.Builder = AlertDialog.Builder(this)
             builder.setTitle(R.string.safe_mode_title)
