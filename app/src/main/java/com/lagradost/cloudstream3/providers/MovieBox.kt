@@ -422,8 +422,17 @@ class MovieBoxFilm : MovieBox() {
     override var name = "Film"
     override val mainPage = mainPageOf(
         "8821254238245470240" to "Trending Movies",
+        "4230655749032234008" to "More Asian Movies"
         "6528093688173053896" to "Trending Indonesian Movies",
-        "4019055174353407000" to "Recently Added"
+        "3528002473103362040" to "Funny Horror & Crime 😈",
+        "8631229833357447544" to "2026 Oscars Winners 🏆",
+        "5848753831881965888" to "Indonesian Horror Stories 💀",
+        "997144265920760504" to "Hollywood Movies"
+        "3770510954220470720" to "Family Time🏡"
+        "7749480172839487888" to "Indonesia Comedy 🍿"
+        "9011214416192460040" to "Fantasy World ✨"
+        "8049887023940913872" to "Top 200 All Time Box Office"
+        "3058742380078711608" to "Disney World 🏰"
     )
 }
 
